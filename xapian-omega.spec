@@ -1,13 +1,20 @@
+%include	/usr/lib/rpm/macros.perl
 Summary:	A CGI search frontend and indexers built on Xapian
+Summary(pl.UTF-8):	Frontend wyszukiwarki CGI oraz programy indeksujące oparte na Xapianie
 Name:		xapian-omega
-Version:	1.0.4
+Version:	1.2.12
 Release:	0.1
-License:	GPL
+License:	GPL v2+
 Group:		Applications/Databases
+Source0:	http://oligarchy.co.uk/xapian/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	7eed3c1e9e6acb703d6587ed9a038265
 URL:		http://www.xapian.org/
-Source0:	http://www.oligarchy.co.uk/xapian/%{version}/%{name}-%{version}.tar.gz
-Patch0:		%{name}-gcc43.patch
-# Source0-md5:	f4c84cc69cad731677a430c4e3e9a16f
+BuildRequires:	help2man
+BuildRequires:	libmagic-devel
+BuildRequires:	libstdc++-devel >= 5:3.1
+BuildRequires:	pcre-devel
+BuildRequires:	perl-base
+BuildRequires:	rpm-perlprov
 BuildRequires:	xapian-core-devel = %{version}
 Requires:	xapian-core-libs = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -18,9 +25,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Omega is a CGI application which uses the Xapian Information Retrieval
 library to index and search collections of documents.
 
+%description -l pl.UTF-8
+Omega to aplikacja CGI wykorzystująca bibliotekę uzyskiwania
+informacji Xapian w celu indeksowania i przeszukiwania zbioru
+dokumentów.
+
 %prep
 %setup -q
-%patch
 
 %build
 %configure
@@ -28,8 +39,10 @@ library to index and search collections of documents.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT docdatadir=%{_docdir}/%{name}/
+	DESTDIR=$RPM_BUILD_ROOT \
+	docdatadir=%{_docdir}/%{name}
 
 # CGI application
 install -d $RPM_BUILD_ROOT%{cgibindir}
@@ -55,22 +68,24 @@ mv $RPM_BUILD_ROOT%{_datadir}/omega $RPM_BUILD_ROOT%{_datadir}/%{name}
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -a images $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 
-rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog COPYING NEWS README TODO
-%doc docs/*.txt
-%config(noreplace) %{_sysconfdir}/omega.conf
+%doc AUTHORS ChangeLog NEWS README TODO docs/*.html
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/omega.conf
 %attr(755,root,root) %{_bindir}/dbi2omega
 %attr(755,root,root) %{_bindir}/omindex
 %attr(755,root,root) %{_bindir}/scriptindex
 %attr(755,root,root) %{_bindir}/htdig2omega
 %attr(755,root,root) %{_bindir}/mbox2omega
 %attr(755,root,root) %{cgibindir}/%{name}
+%dir %{_libdir}/xapian-omega
+%dir %{_libdir}/xapian-omega/bin
+%attr(755,root,root) %{_libdir}/xapian-omega/bin/outlookmsg2html
 %{_mandir}/man1/omindex.1*
 %{_mandir}/man1/scriptindex.1*
 %{_datadir}/%{name}
