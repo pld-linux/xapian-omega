@@ -2,7 +2,7 @@
 Summary:	A CGI search frontend and indexers built on Xapian
 Summary(pl.UTF-8):	Frontend wyszukiwarki CGI oraz programy indeksujące oparte na Xapianie
 Name:		xapian-omega
-Version:	1.2.12
+Version:	1.2.18
 Release:	0.1
 License:	GPL v2+
 Group:		Applications/Databases
