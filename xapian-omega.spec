@@ -6,8 +6,8 @@ Version:	1.2.18
 Release:	0.1
 License:	GPL v2+
 Group:		Applications/Databases
-Source0:	http://oligarchy.co.uk/xapian/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	7eed3c1e9e6acb703d6587ed9a038265
+Source0:	http://oligarchy.co.uk/xapian/%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	d8211fe2f7d34fa51f58ca685ce17ea9
 URL:		http://www.xapian.org/
 BuildRequires:	help2man
 BuildRequires:	libmagic-devel
